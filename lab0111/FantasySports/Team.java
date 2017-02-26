@@ -8,64 +8,77 @@ import java.util.Random;
  */
 public class Team {
     private ArrayList<Player> playerList;
-    private Coach c;
-    public final String name;
-    double strengthNumber;
+    private Coach coach;
+    public final String teamName;
 
-    public Team(ArrayList<Player> playerList, Coach c, String name) {
+    public Team(ArrayList<Player> playerList, Coach coach, String teamName) {
         this.playerList = playerList;
-        this.name = name;
-        this.c = c;
-        strengthNumber = strengthNumber(this);
+        this.teamName = teamName;
+        this.coach = coach;
     }
 
     public ArrayList<Player> getPlayers(){
         return playerList;
     }
 
-    double strengthNumber(Team t) {
-        double strengthNumber;
-        double trivia = 0;
-        double lens = 0;
-        double comicKnowledge = 0;
-        double videoGame = 0;
-        double socialAwkwardness = 0;
+    public double getstrengthNumber() {
+        double strengthNumber, trivia = 0, lens = 0, comicKnowledge = 0, videoGame = 0, socialAwkwardness = 0;
 
-        for (int i = 0; i < t.playerList.size(); i++) {
-            trivia += t.playerList.get(i).getTrivia();
-            lens += t.playerList.get(i).getLens();
-            comicKnowledge += t.playerList.get(i).getComicKnowledge();
-            videoGame += t.playerList.get(i).getVideoGame();
-            socialAwkwardness += t.playerList.get(i).getSocialAwkwardness();
+        for (int i = 0; i < playerList.size(); i++) {
+            trivia += playerList.get(i).getTrivia();
+            lens += playerList.get(i).getLens();
+            comicKnowledge += playerList.get(i).getComicKnowledge();
+            videoGame += playerList.get(i).getVideoGame();
+            socialAwkwardness += playerList.get(i).getSocialAwkwardness();
         }
 
-        trivia += t.c.getTrivia();
-        lens += t.c.getLens();
-        comicKnowledge += t.c.getComicKnowledge();
-        videoGame += t.c.getVideoGame();
-        socialAwkwardness += t.c.getSocialAwkwardness();
+        trivia += coach.getTrivia();
+        lens += coach.getLens();
+        comicKnowledge += coach.getComicKnowledge();
+        videoGame += coach.getVideoGame();
+        socialAwkwardness += coach.getSocialAwkwardness();
 
-        trivia /= t.playerList.size() + 1;
-        lens /= t.playerList.size() + 1;
-        comicKnowledge /= t.playerList.size() + 1;
-        videoGame /= t.playerList.size() + 1;
-        socialAwkwardness /= t.playerList.size() + 1;
+        trivia /= (playerList.size() + 1);
+        lens /= (playerList.size() + 1);
+        comicKnowledge /= (playerList.size() + 1);
+        videoGame /= (playerList.size() + 1);
+        socialAwkwardness /= (playerList.size() + 1);
 
-        strengthNumber = t.c.getMultiplier()
+
+        strengthNumber = (coach.getMultiplier()/5 + 1)
                 * (trivia + lens + comicKnowledge + videoGame + socialAwkwardness);
         return strengthNumber;
     }
 
-    public String playGame(Team a) {
-        Random rn = new Random();
-        double strengthNumberA = strengthNumber(a) * (rn.nextDouble());
-        if (strengthNumberA > strengthNumber) {
-            return a.name + " has won!";
-        } else if (strengthNumber > strengthNumberA) {
-            return "Team B has won!";
-        } else {
-            return "Tie! Both teams are equally nerdy.";
+    public Coach getCoach(){
+        return coach;
+    }
+    public void addPlayer(Player player){
+        playerList.add(player);
+    }
 
+    public void removePlayer(Player player){
+        playerList.remove(player);
+    }
+
+    public void changeCoach(Coach coach){
+        this.coach = coach;
+    }
+
+    public Team playGame(Team teamA) {
+        Random rn = new Random();
+        double winNumber = getstrengthNumber() + rn.nextInt(1000);//winning number for this team
+        double winNumberA = teamA.getstrengthNumber() + rn.nextInt(1000); //winning number for team a
+        if (winNumberA > winNumber) {
+            return teamA;
+        } else if (winNumber > winNumberA) {
+            return this;
+        } else {
+            int tiebreaker = rn.nextInt(2);
+            if (tiebreaker == 0)
+                return teamA;
+            else
+                return this;
         }
     }
 }

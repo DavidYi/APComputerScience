@@ -3,7 +3,7 @@ package lab0111.PowerSchool;
 /**
  * Created by Sowmya on 2/10/2016.
  */
-public class Student {
+public class Student implements Comparable<Student>{
     /* When you declare the Student class, declare it as:
      *     public class Student implements Comparable<Student>{
      *  This is your promise to include the compareTo() method.
@@ -14,11 +14,12 @@ public class Student {
     private Course[] schedule; // Contains no more than ten courses.
     private int courseCounter;
 
-    public Student(String name, int gradYear, School Academy) {
+    public Student(String name, int gradYear) {
         Name = name;
         this.gradYear = gradYear;
-        this.Academy = Academy;
+        Academy = null;
         schedule = new Course[10];
+        courseCounter = 0;
     }
 
     public String getName() {
@@ -37,6 +38,10 @@ public class Student {
         return Academy;
     }
 
+    public void setAcademy(School academy) {
+        Academy = academy;
+    }
+
     public Course[] getSchedule(){
         return schedule;
     }
@@ -44,23 +49,33 @@ public class Student {
     // Calculates GPA as average of classes
     public double getGPA() {
         double total = 0;
+        int audit = 0;
+        Grade temp;
         for (int i = 0; i < courseCounter; i++) {
-            total += schedule[i].getGrade(this).getGrade();
+            temp = schedule[i].getGrade(this);
+            if (temp.audited())
+                audit++;
+            else
+                total += temp.getGrade();
         }
-        return total / courseCounter;
+        return total / (courseCounter - audit);
     }
 
     // Returns compareTo value for the GPAs of the two students
     public int compareTo(Student someOtherKid) {
         Double mine = this.getGPA();
         Double other = someOtherKid.getGPA();
-        return mine.compareTo(other);
+        return Double.compare(mine, other);
     }
 
     public boolean addCourse(Course someCourse) {
         if (courseCounter >= 10)
             return false;
-        schedule[courseCounter - 1] = someCourse;
+        boolean work = someCourse.enroll(this);
+        if (work == false)
+            return false;
+
+        schedule[courseCounter] = someCourse;
         courseCounter++;
         return true;
     }
@@ -69,10 +84,10 @@ public class Student {
     *  Returns false if: course was not on student’s schedule.
     */
     public boolean dropCourse(Course someCourse) {
-        for (int i = 0; i < 10; i++) {
-            if (schedule[i] == someCourse) {
-                for (int j = i; j < 10; j++)
-                    schedule[i] = schedule[i - 1];
+        for (int i = 0; i < courseCounter; i++) {
+            Course tempC = schedule[i];
+            if (tempC == someCourse) {
+                schedule[i] = null;
                 courseCounter--;
                 return true;
             }

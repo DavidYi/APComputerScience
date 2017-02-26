@@ -27,10 +27,10 @@ public class Coach {
 
     public Coach(String nameof) {
         name = nameof;
-        trivia = 75;
-        lens = 60;
-        comicKnowledge = 80;
-        socialAwkwardness = 40;
+        trivia = 50;
+        lens = 50;
+        comicKnowledge = 50;
+        socialAwkwardness = 50;
         videoGame = 50;
         multiplier = 3;
     }
@@ -75,8 +75,16 @@ public class Coach {
         comicKnowledge = knowledge;
     }
 
-    public void setvideoGameSkill(int videoGame) {
-        videoGame = videoGame;
+    public void setVideoGame(int videoGame) {
+        this.videoGame = videoGame;
+    }
+
+    public void setSocialAwkwardness(int socialAwkwardness){
+        this.socialAwkwardness = socialAwkwardness;
+    }
+
+    public void setMultiplier(int multiplier){
+        this.multiplier = multiplier;
     }
 
     public void setName(String nameof) {

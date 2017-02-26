@@ -19,7 +19,7 @@ public class MazeGenerator {
     //-1 is wall, 0 is path, start is 0,0 and end is side, side
     private int[][] maze;
     //dimensions of the maze
-    protected int side = 10;
+    protected int side = 5;
 
     //used in the Recursive Back tracker Maze Generator method
     private Point[] stack;
@@ -40,7 +40,8 @@ public class MazeGenerator {
     private final int WALL = -1;
     private final int NOT_WALL = 0;
 
-    public MazeGenerator() {
+    public MazeGenerator(int side) {
+        this.side = side;
         stack = new Point[side * side];
         maze = new int[side * 2 - 1][side * 2 - 1];
         sp = 0;  // stack pointer
@@ -116,13 +117,13 @@ public class MazeGenerator {
                 if (neighborCount != 0) {
                     dir = rand.nextInt(neighborCount);
 
-                    if (neighbors[dir] == 'u') {//go up
+                    if (neighbors[dir] == 'u') {//go UP
                         mazeY -= 2;
                         wallY--;
-                    } else if (neighbors[dir] == 'r') {//go right
+                    } else if (neighbors[dir] == 'r') {//go RIGHT
                         mazeX += 2;
                         wallX++;
-                    } else if (neighbors[dir] == 'd') {//go down
+                    } else if (neighbors[dir] == 'd') {//go DOWN
                         mazeY += 2;
                         wallY++;
                     } else if (neighbors[dir] == 'l') {//go left
@@ -141,13 +142,13 @@ public class MazeGenerator {
                 if (neighborCount != 0) {
                     dir = rand.nextInt(neighborCount);
 
-                    if (neighbors[dir] == 'u') {//go up
+                    if (neighbors[dir] == 'u') {//go UP
                         mazeY -= 2;
                         wallY--;
-                    } else if (neighbors[dir] == 'r') {//go right
+                    } else if (neighbors[dir] == 'r') {//go RIGHT
                         mazeX += 2;
                         wallX++;
-                    } else if (neighbors[dir] == 'd') {//go down
+                    } else if (neighbors[dir] == 'd') {//go DOWN
                         mazeY += 2;
                         wallY++;
                     }
@@ -166,10 +167,10 @@ public class MazeGenerator {
                     if (neighbors[dir] == 'l') {//go left
                         mazeX -= 2;
                         wallX--;
-                    } else if (neighbors[dir] == 'd') {//go down
+                    } else if (neighbors[dir] == 'd') {//go DOWN
                         mazeY += 2;
                         wallY++;
-                    } else if (neighbors[dir] == 'r') {//go right
+                    } else if (neighbors[dir] == 'r') {//go RIGHT
                         mazeX += 2;
                         wallX++;
                     }
@@ -188,10 +189,10 @@ public class MazeGenerator {
                     if (neighbors[dir] == 'l') {//go left
                         mazeX -= 2;
                         wallX--;
-                    } else if (neighbors[dir] == 'u') {//go up
+                    } else if (neighbors[dir] == 'u') {//go UP
                         mazeY -= 2;
                         wallY--;
-                    } else if (neighbors[dir] == 'r') {//go right
+                    } else if (neighbors[dir] == 'r') {//go RIGHT
                         mazeX += 2;
                         wallX++;
                     }
@@ -207,13 +208,13 @@ public class MazeGenerator {
                 if (neighborCount != 0) {
                     dir = rand.nextInt(neighborCount);
 
-                    if (neighbors[dir] == 'u') {//go up
+                    if (neighbors[dir] == 'u') {//go UP
                         mazeY -= 2;
                         wallY--;
                     } else if (neighbors[dir] == 'l') {//go left
                         mazeX -= 2;
                         wallX--;
-                    } else if (neighbors[dir] == 'd') {//go down
+                    } else if (neighbors[dir] == 'd') {//go DOWN
                         mazeY += 2;
                         wallY++;
                     }
@@ -227,10 +228,10 @@ public class MazeGenerator {
                 if (neighborCount != 0) {
                     dir = rand.nextInt(neighborCount);
 
-                    if (neighbors[dir] == 'd') {//go down
+                    if (neighbors[dir] == 'd') {//go DOWN
                         mazeY += 2;
                         wallY++;
-                    } else {//go right
+                    } else {//go RIGHT
                         mazeX += 2;
                         wallX++;
                     }
@@ -244,15 +245,15 @@ public class MazeGenerator {
                 if (neighborCount != 0) {
                     dir = rand.nextInt(neighborCount);
 
-                    if (neighbors[dir] == 'u') {//go up
+                    if (neighbors[dir] == 'u') {//go UP
                         mazeY -= 2;
                         wallY--;
-                    } else {//go right
+                    } else {//go RIGHT
                         mazeX += 2;
                         wallX++;
                     }
                 }
-            } else if (isEdge == TR_CORNER) {//upper right corner
+            } else if (isEdge == TR_CORNER) {//upper RIGHT corner
                 if (maze[mazeY + 2][mazeX] == WALL)
                     neighbors[neighborCount++] = 'd';
                 if (maze[mazeY][mazeX - 2] == WALL)
@@ -264,12 +265,12 @@ public class MazeGenerator {
                     if (neighbors[dir] == 'l') {//go left
                         mazeX -= 2;
                         wallX--;
-                    } else {//go down
+                    } else {//go DOWN
                         mazeY += 2;
                         wallY++;
                     }
                 }
-            } else if (isEdge == BR_CORNER) {//lower right corner
+            } else if (isEdge == BR_CORNER) {//lower RIGHT corner
                 if (maze[mazeY - 2][mazeX] == WALL)
                     neighbors[neighborCount++] = 'u';
                 if (maze[mazeY][mazeX - 2] == WALL)
@@ -278,7 +279,7 @@ public class MazeGenerator {
                 if (neighborCount != 0) {
                     dir = rand.nextInt(neighborCount);
 
-                    if (neighbors[dir] == 'u') {//go up
+                    if (neighbors[dir] == 'u') {//go UP
                         mazeY -= 2;
                         wallY--;
                     } else {//go left
@@ -305,6 +306,7 @@ public class MazeGenerator {
 
     public void setSide(int side){
         this.side = side;
+
     }
 
     public String[][] mazeToStringArray() {
@@ -322,6 +324,10 @@ public class MazeGenerator {
                     mazeASCII[y][x] = " ╚";
                 else if (y == mazeASCII.length - 1 && x == mazeASCII[y].length - 1)
                     mazeASCII[y][x] = "╝ ";
+                else if (x == 0 && y == 1)
+                    mazeASCII[y][x] = "  ";
+                else if (x == mazeASCII.length - 1 && y == mazeASCII.length - 2)
+                    mazeASCII[y][x] = "  ";
                 else if (y == 0)
                     mazeASCII[y][x] = "══";
                 else if (x == 0)
@@ -335,7 +341,7 @@ public class MazeGenerator {
                 if ((y > 0 && y < mazeASCII.length - 1) && (x > 0 && x < mazeASCII.length - 1)) {
                     mazeY = y - 1;
                     mazeX = x - 1;
-                    place = maze[mazeX][mazeY];
+                    place = maze[mazeY][mazeX];
 
                     if (mazeX == 0 && mazeY == 0)
                         mazeASCII[y][x] = "S ";// make starting point

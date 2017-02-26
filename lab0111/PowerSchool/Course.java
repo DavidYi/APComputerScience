@@ -15,9 +15,15 @@ public class Course {
         this.teacher = teacher;
         courseTitle = title;
         this.honors = honors;
+        enrolledStudents = new Student[10];
+        grades = new Grade[10];
     }
 
-    public int getEnrolled(){
+    public boolean isHonors() {
+        return honors;
+    }
+
+    public int getEnrolled() {
         return enrolled;
     }
 
@@ -31,10 +37,10 @@ public class Course {
 
     public Grade getGrade(Student someStudent) {
         for (int i = 0; i < enrolled; i++)
-            if (someStudent.equals(enrolledStudents[i]))
+            if (enrolledStudents[i].equals(null))
                 return grades[i];
 
-        return grades[enrolled];
+        return grades[0];
     }
 
     public int numberEnrolled() {
@@ -48,7 +54,7 @@ public class Course {
     // returns the top student in this course. (Can arbitrarily choose between a tie)
     public Student topStudent() {
         int top = 0;
-        for (int i = 1; i < enrolled; i++){
+        for (int i = 1; i < enrolled; i++) {
             if (grades[top].getGrade() < grades[i].getGrade())
                 top = i;
         }
@@ -68,27 +74,35 @@ public class Course {
     *  enrolled, or if enrollment would cause more than 20 students to be in the course.
     */
     public boolean enroll(Student someStudent) {
-        boolean success = someStudent.addCourse(this) && enrolled <= 20;
-        if (success) {
-            enrolledStudents[enrolled] = someStudent;
-            enrolled++;
+        if (someStudent.getCourseNumber() < 10 && enrolled < 20) {
+            for (int i = 0; i < someStudent.getCourseNumber(); i++)
+                if (someStudent.getSchedule()[i].equals(this))
+                    return false;
         }
-        return success;
+        grades[enrolled] = new Grade(honors, false);
+        enrolledStudents[enrolled++] = someStudent;
+        return true;
     }
 
     public void unenroll(Student someStudent) {
-        boolean drop = someStudent.dropCourse(this);
-        if (drop) {
+        if (someStudent.dropCourse(this)) {
             boolean change = false;
             for (int i = 0; i < enrolled; i++) {
-                if (enrolledStudents[i].equals(someStudent))
+                Student tempS = enrolledStudents[i];
+                if (someStudent == tempS)
                     change = true;
                 if (change) {
+                    grades[i] = grades[i + 1];
                     enrolledStudents[i] = enrolledStudents[i + 1];
                 }
             }
-
             enrolled--;
+            grades[enrolled] = null;
+            enrolledStudents[enrolled] = null;
         }
+    }
+
+    public Student[] getEnrolledStudents() {
+        return enrolledStudents;
     }
 }

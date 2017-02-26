@@ -7,10 +7,13 @@ import java.util.ArrayList;
  */
 
 public interface Gambler {
-    public void Gamble(Team team1, Team team2);
+    public Bet gamble(Team team1, Team team2);
 
-    public double money();
+    public double getMoneyHave();
 
-    public ArrayList record();
+    public ArrayList getBetRecord();
 
+    public void win(Bet b);
+
+    public void lose(Bet b);
 }

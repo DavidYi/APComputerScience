@@ -13,7 +13,7 @@ public class Grade {
     * not auditing.
     */
     private boolean audit;
-    /* Honors classes have a 5% boost to the grade. */
+    /* Honors classes have a 5% SpeedBoost to the grade. */
     private boolean honors;
 
     public Grade(boolean honors, boolean audited) {
@@ -27,9 +27,9 @@ public class Grade {
     public Grade(boolean honors, boolean audited, double grade) {
         this.honors = honors;
         this.audit = audited;
-        if (grade < 0.0) this.grade = 0.0;
-        else if (grade > 100.0) this.grade = 100.0;
-        else this.grade = grade;
+        if (grade < 0.0) grade = 0.0;
+        else if (grade > 100.0) grade = 100.0;
+        this.grade = grade;
     }
 
     /*
@@ -51,17 +51,18 @@ public class Grade {
         return audit;
     }
 
-    /*
-    * Sets the Grade to a number between 0.0 and 100.0, inclusive. If the grade
-    * provided is out of range, the closest in-range grade is entered.
-    */
+   /*
+   * Sets the Grade to a number between 0.0 and 100.0, inclusive. If the grade
+   * provided is out of range, the closest in-range grade is entered.
+   */
 
     public void setGrade(double grade) {
+        if (grade > 100.0) this.grade = 100.0;
+        else if (grade < 0.0) this.grade = 0.0;
         this.grade = grade;
     }
 
     public void setAudit(boolean audit) {
         this.audit = audit;
     }
-
 }
